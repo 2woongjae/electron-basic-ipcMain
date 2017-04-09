@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ipcMain</title>
+</head>
+<body>
+    <button id="test-async">test-async</button>
+    <button id="test-sync">test-sync</button>
+
+    <script>
+        const {ipcRenderer} = require('electron');
+
+        ipcRenderer.on('test-async-reply', (event, arg) => {
+            console.log(arg);
+        });
+
+        const btn_async = document.querySelector('#test-async');
+        const btn_sync = document.querySelector('#test-sync');
+
+        btn_async.addEventListener('click', () => {
+            ipcRenderer.send('test-async', 'this is async test');
+        });
+
+        btn_sync.addEventListener('click', () => {
+            const reply = ipcRenderer.sendSync('test-sync', 'this is sync test');
+            console.log(reply);
+        });
+    </script>
+</body>
+</html>
